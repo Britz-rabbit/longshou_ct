@@ -1,0 +1,14 @@
+.flex {
+  display: flex;
+}
+.middle {
+  justify-content: space-between;
+  align-items: center;
+}
+.container {
+  height: 94vh;
+  margin-top: 2vh;
+  overflow: hidden;
+  justify-content: space-around;
+  white-space: no-warp;
+}
