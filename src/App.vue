@@ -73,8 +73,8 @@ export default {
       // }
       //console.log('收到信息');
       // pad机器人相关信息
-      if (data.frameId && data.dataLength) {
-        //console.log('收到了机器人信息'); 
+      if ( data.dataLength) {
+        // console.log('收到了机器人信息'); 
         this.$store.commit('changeRobotInfo', data)
         return
       }

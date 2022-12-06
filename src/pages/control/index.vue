@@ -25,7 +25,7 @@
             <!-- 图标矩阵，图取自element UI -->
             <div class="iconRect">
               <div v-for="(item, index) in iconList" class="iconCon ani1" @mouseenter="addAni" @mouseleave="removeAni"
-                @click="sendMsg('funLib', 1, 0, item.title)">
+                @click="sendMsg('funLib', index+1, 0, item.title)">
                 <i :class="item.icon"></i>
                 <span>{{ item.title }}</span>
               </div>
@@ -72,12 +72,12 @@
               <!-- 左侧舵机亮度 -->
               <div class="light" style="left:14%;top: 36%;">
                 <div @click="sendMsg('steer', 5, 'plus', '左侧亮度增加')">亮度+</div>
-                <div @click="sendMsg('steer', 6, 'min', '左侧亮度增加')">亮度-</div>
+                <div @click="sendMsg('steer', 6, 'min', '左侧亮度减少')">亮度-</div>
               </div>
               <!-- 右侧舵机亮度 -->
               <div class="light" style="right:12%;top: 36%;">
                 <div @click="sendMsg('steer', 7, 'plus', '右侧亮度增加')">亮度+</div>
-                <div @click="sendMsg('steer', 8, 'min', '右侧亮度增加')">亮度-</div>
+                <div @click="sendMsg('steer', 8, 'min', '右侧亮度减少')">亮度-</div>
               </div>
 
               <!-- 控制两侧舵机翻转 -->
@@ -176,12 +176,17 @@ export default {
     },
     PageWSonerror(e) {
       console.log(e);
+      console.log('连接断开，正在自动重连');
+      const url = 'ws://192.168.2.38:31000';
+      this.pageWs = new WebSocket(url);
     },
     PageWSonmessage(e) {
       //alert(e.data)
     },
     PageWSclose() {
       console.log("pageWs关闭");
+      console.log('连接断开，正在自动重连');
+      const url = 'ws://192.168.2.38:31000';
       this.pageWs.close();
     },
 
@@ -226,9 +231,6 @@ export default {
     removeAni(e) {
       e.currentTarget.className = 'iconCon ani1'
     },
-
-
-
 
   },
   beforeDestroy() {

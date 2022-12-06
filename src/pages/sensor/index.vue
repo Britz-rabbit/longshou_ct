@@ -24,7 +24,7 @@
         </div>
         <!-- 第二部分 -->
         <div class="" style="width: 100%;height:86%">
-          <list :data="robotTableData"></list>
+          <list :data="robotTableData" @showSensorDetail="showSensorDetail"></list>
         </div>
         <!-- 第三部分 -->
         <div class="" style="width: 98%;height:10%;display: flex;justify-content: flex-end;margin-right: 2%;">
@@ -32,6 +32,11 @@
             layout="prev, pager, next" :total="$store.state.sensorInfo.length + 1">
           </el-pagination>
         </div>
+
+        <el-dialog title="详细抓拍" :modal="false" center :visible.sync="dialogVisible" width="50%">
+          <img :src="gallaryImg" alt="" style="width: 100%;height:100%;">
+        </el-dialog>
+
       </dv-border-box-10>
     </div>
   </dv-full-screen-container>
@@ -84,7 +89,11 @@ export default {
       //分页器的当前页面
       currentPage: 1,
       //对应页数的数据，每页15个数据
-      currentTableData: null
+      currentTableData: null,
+      //查看详细信息的对话框
+      gallaryImg: require("../../assets/img/wrong.jpeg"),
+      //对话框是否显示
+      dialogVisible:false
     }
   },
   props: {
@@ -164,9 +173,11 @@ export default {
       return newArr
     },
 
-
-
-
+    //在对话框内显示子组件list传过来的信息
+    showSensorDetail(row){
+      console.log('父组件收到数据',row);
+      this.dialogVisible=true
+    }
   },
   watch: {
 

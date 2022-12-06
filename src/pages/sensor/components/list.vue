@@ -98,6 +98,13 @@ export default {
       }
     },
 
+    //查看详情
+    handleClick(row){
+      console.log('子组件发送数据',row);
+      this.$emit('showSensorDetail',row)
+    }
+    
+
   },
 }
 </script>
