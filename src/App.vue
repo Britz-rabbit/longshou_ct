@@ -1,8 +1,5 @@
 <template>
   <div id="app">
-    <!-- <transition :name="transitionName">
-              <router-view></router-view> 
-          </transition> -->
     <router-view></router-view>
   </div>
 </template>
@@ -41,6 +38,9 @@ export default {
         this.transitionName = "slide-right";
       }
     },
+    $bus(val){
+      console.log(1111);
+    }
   },
   methods: {
     //初始化websocket函数
@@ -76,6 +76,10 @@ export default {
       if ( data.dataLength) {
         // console.log('收到了机器人信息'); 
         this.$store.commit('changeRobotInfo', data)
+        //当电量低于40%且发生变化时，提示电量不足
+        if(data.battPower<40 && data.battPower!==this.$bus.currentPower) this.lowPower()
+        this.$bus.currentPower=data.battPower
+        // if(data.battPower<40)this.lowPower()
         return
       }
       // if (data.position && data.speed) {
@@ -89,6 +93,17 @@ export default {
       console.log("connection closed");
       this.$bus.isConnect=false
     },
+
+    //电量低于40%的自动提示
+    lowPower() {
+      console.log(111);
+        this.$notify({
+          title: '电量过低！',
+          message: '当前电量过低，请回程充电',
+          type:'warning',
+          duration: 800
+        });
+      }
   }
 
 }

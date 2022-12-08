@@ -14,23 +14,25 @@ const store = new Vuex.Store({
               //名称
               name: '烟雾传感器',
               //时间
-              date: '2022-11-16',
+              date: '2022-11-18',
               //根据不同传感器添加不同单位，value同理
               position: `32米`,
-              value: `160`,
+              value: `50`,
               //是否异常
               isDanger: true,
               //是否确认
               isConfirm: false,
               //详细情况
-              detail: {}
+              detail: {
+                imgSrx:require('@/assets/img/wrong.jpeg')
+              }
             },
             {
-              name: '烟雾传感器',
+              name: '红外传感器',
                //时间
                date: '2022-11-16',
               //根据不同传感器添加不同单位，value同理
-              position: `32米`,
+              position: `168米`,
               value: `160`,
               //是否异常
               isDanger: false,
@@ -40,12 +42,12 @@ const store = new Vuex.Store({
               detail: {}
             },
             {
-              name: '烟雾传感器',
+              name: '湿度传感器',
                //时间
                date: '2022-11-16',
               //根据不同传感器添加不同单位，value同理
-              position: `32米`,
-              value: `160`,
+              position: `98米`,
+              value: `42`,
               //是否异常
               isDanger: true,
               //是否确认

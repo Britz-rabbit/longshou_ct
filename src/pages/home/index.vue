@@ -74,14 +74,15 @@
               <div class="dot d25 " :class="{ robot: currentDot === 'd25' }"></div>
 
               <!-- 主要设备的预设埋点 -->
-              <el-tooltip>
+              <!-- <el-tooltip>
                 <div slot="content"><span style="font-size:14px">撕裂检测设备</span></div>
                 <div @click="changePage('/warning')" class="deviceDot break success"></div>
               </el-tooltip>
               <el-tooltip content="多功能检测设备">
                 <div slot="content"><span style="font-size:14px">多功能检测设备</span></div>
                 <div @click="changePage('/warning')" class="deviceDot mult success"></div>
-              </el-tooltip>
+              </el-tooltip> -->
+
               <!-- <div @click="changePage()" class="deviceDot d3"></div> -->
               <!-- 机器人位置的预设埋点 -->
               <!-- <div class="robotDot r1"></div>
@@ -132,10 +133,7 @@
                 <span>正常</span>
               </div>
             </div>
-
             <!-- <dv-water-level-pond :config="waterConfig" style="width:6vw;height:6vw;margin-left: 2vw;" /> -->
-
-
           </div>
           <!-- 烟感显示 -->
           <div class="con con4 " style="height:20%;">
@@ -171,11 +169,8 @@
               <dv-border-box-6>
                 <dv-scroll-board :config="ListConfig1" style="width:96%;height:92%;margin: 0 auto;padding-top: 2%;" />
               </dv-border-box-6>
-
             </div>
           </div>
-
-
         </div>
 
         <!-- 右侧区域 -->
@@ -206,8 +201,8 @@
               </div>
               <!-- 启动停止按钮 -->
               <div class="btnCon " style="display:flex;justify-content:space-around;align-items:center">
-                <div class="btn "></div>
-                <div class="btn "></div>
+                <div class="btn " @click="fastControl"></div>
+                <div class="btn " @click="fastControl"></div>
               </div>
               <!-- 机器人巡航 -->
             </div>
@@ -385,8 +380,8 @@ export default {
           ["二号电流", "5A", "正常"],
           ['二号温度', '66°C', '正常'],
         ],
-        // oddRowBGC:'#1F505F',
-        // evenRowBGC:'#2C7189'
+         oddRowBGC:'#1F505F60',
+         evenRowBGC:'#2C718960'
       },
       //左侧列表的数据整合
       infoField: [
@@ -449,7 +444,13 @@ export default {
         }
       },
       //实时刷新图标配置的定时器
-      refreshTimer:null
+      refreshTimer:null,
+      //机器人的快速控制
+      fastControl(e){
+        //alert(1)
+        console.log(e);
+        console.log(e.currentTarget);
+      }
     };
   },
   props: {},
@@ -459,7 +460,7 @@ export default {
   computed: {
     //当前显示的第几个点
     currentDot() {
-      return 'd' + Math.floor(this.position / 38.4)
+      return 'd' + Math.floor(this.robotPosition / 38.4)
     }
   },
 
@@ -482,16 +483,6 @@ export default {
     }, 1000);
     //获取视频
     this.initWebCameraWs()
-    //给机器人位置埋点
-    // let points=document.getElementsByClassName('dot')
-    // let distance=58/23//每个点之间的间隔：单位%
-    // for (let i = 0; i < points.length; i++) {
-    //   // points[i].style.left=(i+1)*distance+'%'
-    //   // points[i].style.top='45%'
-    //   console.log(points[i]);
-    // }
-    // console.log(points);
-
     //根据最新收到的信息来刷新图表
     this.refreshTimer=setInterval(() => {
       //电量图
@@ -1106,7 +1097,7 @@ span {
         justify-content: space-around;
         align-items: space-between;
         //background: url('@/assets/img/home/inspectionBcg.jpg') no-repeat;
-        background: url('@/assets/img/home/inspectionBcg.png') no-repeat;
+        //background: url('@/assets/img/home/inspectionBcg.png') no-repeat;
         background-size: cover;
 
         .insItem {

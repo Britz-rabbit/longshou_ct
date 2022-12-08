@@ -2,7 +2,7 @@ import Vue from 'vue';
 import {Icon,Table,TableColumn,Button,Carousel,CarouselItem,
     Dialog,Card,Select,Option,Tooltip,Calendar,Badge,Popover,Tag,
     Tabs,TabPane,Switch,Input,Row,FormItem,Col,Form,Loading,MessageBox,Message,
-    DatePicker,Pagination,TimePicker
+    DatePicker,Pagination,TimePicker,Notification
 } from 'element-ui';
 
 Vue.use(Icon)
@@ -36,7 +36,7 @@ Vue.use(Loading)
 Vue.component(MessageBox.name,MessageBox)
 Vue.prototype.$message=Message
 Vue.prototype.$confirm=MessageBox.confirm
-
+Vue.prototype.$notify=Notification
 //顺便引入echarts的水球图插件
 import 'echarts-liquidfill'
 

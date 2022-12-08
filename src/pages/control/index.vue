@@ -25,7 +25,7 @@
             <!-- 图标矩阵，图取自element UI -->
             <div class="iconRect">
               <div v-for="(item, index) in iconList" class="iconCon ani1" @mouseenter="addAni" @mouseleave="removeAni"
-                @click="sendMsg('funLib', index+1, 0, item.title)">
+                @click="sendMsg('funLib', index + 1, 0, item.title)">
                 <i :class="item.icon"></i>
                 <span>{{ item.title }}</span>
               </div>
@@ -41,8 +41,7 @@
             <IR_video></IR_video>
           </div>
         </div>
-        <span style="position:absolute;margin-left:30x;font-size: 36px;color: antiquewhite;">{{robotSpeed}}m/s &nbsp;&nbsp;&nbsp;{{robotPosition}}m</span>
-        
+
         <!-- 按钮区域 -->
         <div class="con con3 flex">
           <div class="panel ">
@@ -51,7 +50,9 @@
               <span>机器人控制</span>
             </div>
             <div class="line line1 ">
+              <div style="width:40px;height:24px;font-size:22px;color: aliceblue;">{{ robotSpeed }}m/s</div>
               <div @click="sendMsg('robot', 3, 0, '机器人加速')" class="btn pluse"></div>
+              <div style="width:40px;height:24px;font-size:22px;color: aliceblue;">{{ robotPosition }}m</div>
             </div>
             <div class="line line2 ">
               <div @click="sendMsg('robot', 2, 0, '机器人后退')" class="btn left"></div>
@@ -125,7 +126,7 @@ export default {
       robotPosition: (this.$store.state.robotInfo.currentPosition) / 1000 || 0,
       robotSpeed: this.$store.state.robotInfo.currentSpeed || 0,
       //data refresh flage timer
-      refreshTimer:null
+      refreshTimer: null
     }
   },
   props: {
@@ -142,21 +143,20 @@ export default {
 
   beforeMount() {
 
-
   },
   mounted() {
     this.initPageWS()
     this.initWebCameraWs()
-
-    this.refreshTimer=setInterval(() => {
-      this.robotPosition=this.$store.state.robotInfo.currentPosition || 0
-      this.robotSpeed=this.$store.state.robotInfo.currentSpeed || 0
+    this.keyDown()
+    this.refreshTimer = setInterval(() => {
+      this.robotPosition = this.$store.state.robotInfo.currentPosition || 0
+      this.robotSpeed = this.$store.state.robotInfo.currentSpeed || 0
     }, 300);
   },
   beforeDestroy() {
     this.websocketclose();
-
     clearInterval(this.refreshTimer)
+    this.keyDownReview()
   },
   methods: {
     //pageWs的一系列方法
@@ -231,12 +231,52 @@ export default {
     removeAni(e) {
       e.currentTarget.className = 'iconCon ani1'
     },
+    //监听键盘事件
+    keyDown() {
+      document.onkeydown = function (event) {
+        let e = event || window.event;
+        let keyCode = e.keyCode || e.which;
+        console.log(keyCode);
+        switch (keyCode) {
+          case 38://up
+          case 87://w
+            this.sendMsg('robot', 3, 0, '机器人加速')
+            break;
+          case 40://down
+          case 83://s
+            this.sendMsg('robot', 4, 0, '机器人减速')
+            break;
+          case 37://left
+          case 65://a
+            this.sendMsg('robot', 2, 0, '机器人后退')
+            break;
+          case 39://right
+          case 68://d
+            this.sendMsg('robot', 1, 0, '机器人前进')
+            break;
+          case 32://space
+            this.sendMsg('robot', 5, 0, '机器人停止')
+            break;
+          default:
+            break;
+        }
+        if (e && e.preventDefault) {
+          e.preventDefault();
+        } else {
+          window.event.returnValue = false;
+        }
+      }
+    },
 
+    //解除当前的键盘监听事件
+    keyDownReview() {
+      document.onkeydown = function (event) {
+        var e = event || window.event;
+        e.returnValue = true;
+      }
+    },
   },
-  beforeDestroy() {
-    console.log(this.pageWs);
-    this.websocketclose()
-  }
+
 }
 </script>
 
